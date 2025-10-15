@@ -1,0 +1,21 @@
+{% extends "birds/base.html" %}
+
+{% block title %}All the Orders{% endblock %}
+
+{% block content %}
+    <h1>Orders</h1>
+    {% for order in orders %}
+        <h2><a href="{{ order.get_absolute_url }}">
+                {{ order.name }}
+            </a>
+        </h2>
+        {{ order.families.count }}
+        {% if order.families.count == 1 %}
+            family
+        {% else %}
+            families
+        {% endif %}
+    {% endfor %}
+    {% include "pagination.html" with page=orders %}
+
+{% endblock %}

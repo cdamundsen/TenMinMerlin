@@ -1,0 +1,10 @@
+{% extends "birds/base.html" %}
+
+{% block title %}{{ sp.common_name }} Details{% endblock %}
+
+{% block content %}
+    <h1>{{ sp.common_name }} Details</h1>
+    <i>{{ sp.genus.name}} {{sp.species}}</i>
+    <a href="{{ sp.link }}">Cornell Lab</a>
+    {% endfor %}
+{% endblock %}

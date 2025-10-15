@@ -1,0 +1,15 @@
+{% extends "birds/base.html" %}
+
+{% block title %}Genues in family {{ family.name }}{% endblock %}
+
+{% block content %}
+    <h1>Genuses in family {{ family.name }}</h1>
+    {% for genus in family.genuses.all %}
+        <h2>
+            <a href="{{ genus.get_absolute_url }}">
+                <i>{{ genus.name }}</i>
+            </a>
+        </h2>
+        {{ genus.species.count }} species
+    {% endfor %}
+{% endblock %}

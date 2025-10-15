@@ -1,0 +1,21 @@
+{% extends "birds/base.html" %}
+
+{% block title %}Families in {{ order.name }}{% endblock %}
+
+{% block content %}
+    <h1>Families in order {{ order.name }}</h1>
+    {% for family in families %}
+        <h2>
+            <a href="{{ family.get_absolute_url }}">
+                {{ family.name }}
+            </a>
+        </h2>
+        {{ family.genuses.count }}
+        {% if family.genuses.count == 1 %}
+            genus
+        {% else %}
+            genuses
+        {% endif %}
+    {% endfor %}
+    {% include "pagination.html" with page=families %}
+{% endblock %}
