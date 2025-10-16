@@ -17,7 +17,7 @@ class Order(models.Model):
 
     def get_absolute_url(self):
         return reverse(
-            'birds:family_list',
+            'birds:family-list',
             args=[
                 self.slug,
             ]
@@ -47,7 +47,7 @@ class Family(models.Model):
 
     def get_absolute_url(self):
         return reverse(
-            'birds:genus_list',
+            'birds:genus-list',
             args=[
                 self.slug,
             ]
@@ -77,7 +77,7 @@ class Genus(models.Model):
 
     def get_absolute_url(self):
         return reverse(
-            'birds:species_list',
+            'birds:species-list',
             args=[
                 self.slug,
             ]

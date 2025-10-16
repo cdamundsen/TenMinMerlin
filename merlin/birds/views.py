@@ -68,22 +68,13 @@ def species_list(request, genus):
     )
 
 
-def species_detail(request, species, species_id):
+def detail_species(request, species_id):
     sp = get_object_or_404(
         Species,
         id=species_id,
-        slug=species
     )
-    print("#############")
-    print(sp)
-    import os
-    print(os.listdir('./birds/templates'))
-    print('birds' in os.listdir('./birds/templates'))
-    print('species' in os.listdir('./birds/templates/birds'))
-    print('detail.html' in os.listdir('./birds/templates/birds/species'))
-    print("#############")
     return render(
         request,
-        '/birds/species/detail.html',
+        'birds/species/detail.html',
         {'sp': sp}
     )

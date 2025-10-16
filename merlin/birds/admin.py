@@ -32,8 +32,7 @@ class GenusAdmin(admin.ModelAdmin):
 @admin.register(Species)
 class SpeciesAdmin(admin.ModelAdmin):
     list_display = ['common_name', 'species', 'link']
-    list_filter = ['common_name', 'species']
+    list_filter = ['common_name',]
     search_fields = ['common_name', 'species']
     prepopulated_fields = {'slug': ('common_name',)}
     ordering = ['common_name']
-    show_facets = admin.ShowFacets.ALWAYS

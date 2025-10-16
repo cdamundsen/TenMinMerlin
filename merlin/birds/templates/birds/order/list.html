@@ -5,7 +5,8 @@
 {% block content %}
     <h1>Orders</h1>
     {% for order in orders %}
-        <h2><a href="{{ order.get_absolute_url }}">
+        <h2>
+            <a href="{{ order.get_absolute_url }}">
                 {{ order.name }}
             </a>
         </h2>
