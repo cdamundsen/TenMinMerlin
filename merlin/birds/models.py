@@ -112,20 +112,84 @@ class Species(models.Model):
         null=True
     )
 
+    def get_absolute_url(self):
+        return reverse(
+            'birds:species-detail',
+            args=[
+                self.id,
+            ]
+        )
+
     class Meta:
         ordering = ['common_name']
         indexes = [
             models.Index(fields=['common_name'])
         ]
 
+    def __str__(self):
+        return self.common_name
+
+
+class Location(models.Model):
+    name:models.CharField = models.CharField(
+        max_length=256,
+        unique=True
+    )
+    slug:models.SlugField = models.SlugField(max_length=256)
+    description:models.TextField = models.TextField(
+        null=True,
+        blank=True
+    )
+
     def get_absolute_url(self):
         return reverse(
-            'birds:species_detail',
+            'birds:location-detail',
             args=[
-                self.slug,
-                self.id
+                self.slug
             ]
         )
 
+    class Meta:
+        ordering=['name']
+        indexes=[
+            models.Index(fields=['name'])
+        ]
+
     def __str__(self):
-        return self.common_name
+        return self.name
+
+
+class Event(models.Model):
+    date:models.DateField = models.DateField()
+    slug:models.SlugField = models.SlugField(max_length=48)
+    location:models.ForeignKey = models.ForeignKey(
+        Location,
+        on_delete=models.CASCADE,
+        related_name='events'
+    )
+    birds:models.ManyToManyField = models.ManyToManyField(
+        Species,
+        related_name='events'
+    )
+    comment:models.TextField = models.TextField(
+        null=True,
+        blank=True
+    )
+
+    def get_absolute_url(self):
+        return reverse(
+            'birds:event-detail',
+            args=[
+                self.id,
+            ]
+        )
+
+    class Meta:
+        ordering =['-date']
+        indexes = [
+            models.Index(fields=['-date']),
+            models.Index(fields=['location']),
+        ]
+
+    def __str__(self):
+        return f"{self.location} on {self.date}, {self.birds.count()} birds detected"

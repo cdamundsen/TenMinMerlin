@@ -6,7 +6,7 @@
     <h1>Species in genus <i>{{ genus.name }}</i></h1>
     {% for sp in genus.species.all %}
         <h2>{{ sp.common_name }}</h2>
-        <a href="{% url 'birds:detail-species' sp.id %}">
+        <a href="{{ sp.get_absolute_url }}">
             <i>{{ sp.genus.name}} {{sp.species}}</i>
         </a>
     {% endfor %}

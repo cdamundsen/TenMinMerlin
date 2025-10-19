@@ -1,6 +1,6 @@
 from django.core.paginator import EmptyPage, Paginator
 from django.shortcuts import get_object_or_404, render
-from .models import Family, Genus, Order, Species
+from .models import Event, Family, Genus, Location, Order, Species
 
 ENTRIES_PER_PAGE = 8
 
@@ -68,7 +68,7 @@ def species_list(request, genus):
     )
 
 
-def detail_species(request, species_id):
+def species_detail(request, species_id):
     sp = get_object_or_404(
         Species,
         id=species_id,
@@ -77,4 +77,62 @@ def detail_species(request, species_id):
         request,
         'birds/species/detail.html',
         {'sp': sp}
+    )
+
+
+def events_list(request):
+    events_list = Event.objects.all()
+    paginator = Paginator(events_list, ENTRIES_PER_PAGE)
+    page_number = request.GET.get('page', 1)
+    try:
+        events = paginator.page(page_number)
+    except EmptyPage:
+        # The desired page is out of range of the actual page count.
+        # Show the last page
+        events = paginator.page(paginator.num_pages)
+    return render(
+        request,
+        'birds/events/list.html',
+        {'events': events}
+    )
+
+
+def event_detail(request, id):
+    event = get_object_or_404(
+        Event,
+        id=id
+    )
+    return render(
+        request,
+        'birds/events/detail.html',
+        {'event': event}
+    )
+
+
+def location_list(request):
+    locations_list = Location.objects.all()
+    paginator = Paginator(locations_list, ENTRIES_PER_PAGE)
+    page_number = request.GET.get('page', 1)
+    try:
+        locations = paginator.page(page_number)
+    except EmptyPage:
+        # The desired page is out of range of the actual page count.
+        # Show the last page
+        locations = paginator.page(paginator.num_pages)
+    return render(
+        request,
+        'birds/locations/list.html',
+        {'locations': locations}
+    )
+
+
+def location_detail(request, location):
+    loc = get_object_or_404(
+        Location,
+        slug=location
+    )
+    return render(
+        request,
+        'birds/locations/detail.html',
+        {'location': loc}
     )

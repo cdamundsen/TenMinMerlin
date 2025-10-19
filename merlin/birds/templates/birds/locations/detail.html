@@ -1,0 +1,21 @@
+{% extends "birds/base.html" %}
+
+{% block title %}{{ location }} Details{% endblock %}
+
+{% block content %}
+    <h1>{{ location }} Details</h1>
+    {% if location.description %}
+        <p>
+            {{ location.description }}
+        </p>
+    {% endif %}
+    <ul>
+        {% for event in location.events.all %}
+            <li>
+                <a href="{{ event.get_absolute_url }}">
+                    {{ event.date }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

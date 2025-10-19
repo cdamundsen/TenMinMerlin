@@ -1,9 +1,24 @@
 {% extends "birds/base.html" %}
 
-{% block title %}{{ sp.common_name }} Details{% endblock %}
+{% block title %}{{ sp.common_name }}{% endblock %}
 
 {% block content %}
-    <h1>{{ sp.common_name }} Details</h1>
-    <i>{{ sp.genus.name}} {{sp.species}}</i>
+    <h1>{{ sp.common_name }}</h1>
+    <p>
+        <i>{{ sp.genus.name}} {{sp.species}}</i>
+    </p>
     <a href="{{ sp.link }}">Cornell Lab</a>
+    <h3>{{ sp.events.all.count }} Detection{% if sp.events.all.count != 1 %}s{% endif %}</h3>
+    <ul>
+        {% for event in sp.events.all %}
+            <li>
+                <a href="{{ event.get_absolute_url }}">
+                    {{ event.date }}:
+                </a>
+                <a href="{{ event.location.get_absolute_url }}">
+                    {{ event.location }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
 {% endblock %}

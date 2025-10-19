@@ -1,0 +1,25 @@
+{% extends "birds/base.html" %}
+
+{% block title %}All the Events{% endblock %}
+
+{% block content %}
+    <h1>All the Events</h1>
+    {% for event in events %}
+        <h2>
+            <a href="{{ event.get_absolute_url }}">{{ event.date }}</a>
+        </h2>
+        <p>
+            {{ event.location }}
+        </p>
+        <p>
+            {{ event.birds.count }}
+            {% if event.birds.count == 1 %}
+                bird
+            {% else %}
+                birds
+            {% endif %}
+            detected
+        </p>
+    {% endfor %}
+    {% include "pagination.html" with page=events %}
+{% endblock %}
