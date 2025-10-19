@@ -1,4 +1,4 @@
-from django.core.paginator import EmptyPage, Paginator
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.shortcuts import get_object_or_404, render
 from .models import Event, Family, Genus, Location, Order, Species
 
@@ -10,6 +10,9 @@ def order_list(request):
     page_number = request.GET.get('page', 1)
     try:
         orders = paginator.page(page_number)
+    except PageNotAnInteger:
+        # The desired page is not an integer, show the first page
+        orders = paginator.page(1)
     except EmptyPage:
         # The desired page is out of range of the actual page count.
         # Show the last page
@@ -31,6 +34,9 @@ def family_list(request, order):
     page_number = request.GET.get('page', 1)
     try:
         families = paginator.page(page_number)
+    except PageNotAnInteger:
+        # The desired page is not an integer, show the first page
+        families = paginator.page(1)
     except EmptyPage:
         # Page number page_number not found, render the last page
         families = paginator.page(paginator.num_pages)
@@ -86,6 +92,9 @@ def events_list(request):
     page_number = request.GET.get('page', 1)
     try:
         events = paginator.page(page_number)
+    except PageNotAnInteger:
+        # The desired page is not an integer, show the first page
+        events = paginator.page(1)
     except EmptyPage:
         # The desired page is out of range of the actual page count.
         # Show the last page
@@ -115,6 +124,9 @@ def location_list(request):
     page_number = request.GET.get('page', 1)
     try:
         locations = paginator.page(page_number)
+    except PageNotAnInteger:
+        # The desired page is not an integer, show the first page
+        locations = paginator.page(1)
     except EmptyPage:
         # The desired page is out of range of the actual page count.
         # Show the last page
