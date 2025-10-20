@@ -1,77 +1,45 @@
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.shortcuts import get_object_or_404, render
+from django.views.generic import ListView
 from .models import Event, Family, Genus, Location, Order, Species
 
 ENTRIES_PER_PAGE = 8
 
-def order_list(request):
-    order_list = Order.objects.all()
-    paginator = Paginator(order_list, ENTRIES_PER_PAGE)
-    page_number = request.GET.get('page', 1)
-    try:
-        orders = paginator.page(page_number)
-    except PageNotAnInteger:
-        # The desired page is not an integer, show the first page
-        orders = paginator.page(1)
-    except EmptyPage:
-        # The desired page is out of range of the actual page count.
-        # Show the last page
-        orders = paginator.page(paginator.num_pages)
-    return render(
-        request,
-        'birds/order/list.html',
-        {'orders': orders}
-    )
+class OrderListView(ListView):
+    queryset = Order.objects.all()
+    context_object_name = 'orders'
+    paginate_by = ENTRIES_PER_PAGE
+    template_name = 'birds/order/list.html'
 
 
-def family_list(request, order):
-    order = get_object_or_404(
-        Order,
-        slug=order
-    )
-    family_list = order.families.all()
-    paginator = Paginator(family_list, ENTRIES_PER_PAGE)
-    page_number = request.GET.get('page', 1)
-    try:
-        families = paginator.page(page_number)
-    except PageNotAnInteger:
-        # The desired page is not an integer, show the first page
-        families = paginator.page(1)
-    except EmptyPage:
-        # Page number page_number not found, render the last page
-        families = paginator.page(paginator.num_pages)
-    return render(
-        request,
-        'birds/family/list.html',
-        {
-            'order': order,
-            'families': families,
-        }
-    )
+class FamilyListView(ListView):
+    model = Family
+    context_object_name = 'families'
+    paginate_by = ENTRIES_PER_PAGE
+    template_name='birds/family/list.html'
+
+    def get_queryset(self):
+        return Family.objects.filter(order__slug=self.kwargs['order'])
 
 
-def genus_list(request, family):
-    family = get_object_or_404(
-        Family,
-        slug=family
-    )
-    return render(
-        request,
-        'birds/genus/list.html',
-        {'family': family}
-    )
+class GenusListView(ListView):
+    model = Genus
+    context_object_name = 'genuses'
+    paginate_by = ENTRIES_PER_PAGE
+    template_name = 'birds/genus/list.html'
+
+    def get_queryset(self):
+        return Genus.objects.filter(family__slug=self.kwargs['family'])
 
 
-def species_list(request, genus):
-    genus = get_object_or_404(
-        Genus,
-        slug=genus
-    )
-    return render(
-        request,
-        'birds/species/list.html',
-        {'genus': genus}
-    )
+class SpeciesListView(ListView):
+    model = Species
+    context_object_name = 'species'
+    paginate_by = ENTRIES_PER_PAGE
+    template_name = 'birds/species/list.html'
+
+    def get_queryset(self):
+        return Species.objects.filter(genus__slug=self.kwargs['genus'])
 
 
 def species_detail(request, species_id):

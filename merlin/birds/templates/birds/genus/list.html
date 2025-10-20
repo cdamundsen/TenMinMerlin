@@ -1,15 +1,16 @@
 {% extends "birds/base.html" %}
 
-{% block title %}Genues in family {{ family.name }}{% endblock %}
+{% block title %}Genues in family {{ genuses.first.family.name }}{% endblock %}
 
 {% block content %}
-    <h1>Genuses in family {{ family.name }}</h1>
-    {% for genus in family.genuses.all %}
+    <h1>Genuses in family {{ genuses.first.family.name }}</h1>
+    {% for genus in genuses %}
         <h2>
             <a href="{{ genus.get_absolute_url }}">
                 <i>{{ genus.name }}</i>
             </a>
         </h2>
-        {{ genus.species.count }} species
+        {{ genus.species.all.count }} species
     {% endfor %}
+    {% include "pagination.html" with page=page_obj %}
 {% endblock %}
