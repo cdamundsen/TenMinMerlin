@@ -96,8 +96,7 @@ class Species(models.Model):
     species:models.CharField = models.CharField(
         max_length=128,
         null=True,
-        blank=True,
-        unique=True
+        blank=True
     )
     genus:models.ForeignKey = models.ForeignKey(
         Genus,
