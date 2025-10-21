@@ -4,9 +4,11 @@ from . import views
 app_name = 'birds'
 
 urlpatterns = [
-    path('', views.events_list, name='events-list'),
+    #path('', views.events_list, name='events-list'),
+    path('', views.EventListView.as_view(), name='events-list'),
     path('event/<int:id>', views.event_detail, name='event-detail'),
-    path('locations/', views.location_list, name='location-list'),
+    #path('locations/', views.location_list, name='location-list'),
+    path('locations/', views.LocationListView.as_view(), name='location-list'),
     path('locations/<slug:location>', views.location_detail, name='location-detail'),
     #path('orders/', views.order_list, name='order-list'),
     path('orders/', views.OrderListView.as_view(), name='order-list'),

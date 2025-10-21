@@ -42,6 +42,20 @@ class SpeciesListView(ListView):
         return Species.objects.filter(genus__slug=self.kwargs['genus'])
 
 
+class EventListView(ListView):
+    model = Event
+    context_object_name = 'events'
+    paginate_by = ENTRIES_PER_PAGE
+    template_name = 'birds/events/list.html'
+
+
+class LocationListView(ListView):
+    model = Location
+    context_object_name = 'locations'
+    paginate_by = ENTRIES_PER_PAGE
+    template_name = 'birds/locations/list.html'
+
+
 def species_detail(request, species_id):
     sp = get_object_or_404(
         Species,
@@ -54,26 +68,6 @@ def species_detail(request, species_id):
     )
 
 
-def events_list(request):
-    events_list = Event.objects.all()
-    paginator = Paginator(events_list, ENTRIES_PER_PAGE)
-    page_number = request.GET.get('page', 1)
-    try:
-        events = paginator.page(page_number)
-    except PageNotAnInteger:
-        # The desired page is not an integer, show the first page
-        events = paginator.page(1)
-    except EmptyPage:
-        # The desired page is out of range of the actual page count.
-        # Show the last page
-        events = paginator.page(paginator.num_pages)
-    return render(
-        request,
-        'birds/events/list.html',
-        {'events': events}
-    )
-
-
 def event_detail(request, id):
     event = get_object_or_404(
         Event,
@@ -83,26 +77,6 @@ def event_detail(request, id):
         request,
         'birds/events/detail.html',
         {'event': event}
-    )
-
-
-def location_list(request):
-    locations_list = Location.objects.all()
-    paginator = Paginator(locations_list, ENTRIES_PER_PAGE)
-    page_number = request.GET.get('page', 1)
-    try:
-        locations = paginator.page(page_number)
-    except PageNotAnInteger:
-        # The desired page is not an integer, show the first page
-        locations = paginator.page(1)
-    except EmptyPage:
-        # The desired page is out of range of the actual page count.
-        # Show the last page
-        locations = paginator.page(paginator.num_pages)
-    return render(
-        request,
-        'birds/locations/list.html',
-        {'locations': locations}
     )
 
 
