@@ -5,7 +5,22 @@
 {% block content %}
     <h1>{{ sp.common_name }}</h1>
     <p>
-        <i>{{ sp.genus.name}} {{sp.species}}</i>
+        <i>
+            <a href="{{ sp.genus.get_absolute_url }}">
+                {{ sp.genus.name}}
+            </a>
+            {{sp.species}}
+        </i>
+    </p>
+    <p>Order:
+        <a href="{{ sp.genus.family.order.get_absolute_url }}">
+            {{ sp.genus.family.order }}
+        </a>
+    </p>
+    <p>Family:
+        <a href="{{ sp.genus.family.get_absolute_url}}">
+            {{ sp.genus.family }}
+        </a>
     </p>
     <a href="{{ sp.link }}">Cornell Lab</a>
     <h3>{{ sp.events.all.count }} Detection{% if sp.events.all.count != 1 %}s{% endif %}</h3>
