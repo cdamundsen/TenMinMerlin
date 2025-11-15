@@ -119,27 +119,6 @@ def species_list(request, genus):
     )
 
 
-
-class GenusListView(ListView):
-    model = Genus
-    context_object_name = 'genuses'
-    paginate_by = ENTRIES_PER_PAGE
-    template_name = 'birds/genus/list.html'
-
-    def get_queryset(self):
-        return Genus.objects.filter(family__slug=self.kwargs['family'])
-
-
-class SpeciesListView(ListView):
-    model = Species
-    context_object_name = 'species'
-    paginate_by = ENTRIES_PER_PAGE
-    template_name = 'birds/species/list.html'
-
-    def get_queryset(self):
-        return Species.objects.filter(genus__slug=self.kwargs['genus'])
-
-
 class EventListView(ListView):
     model = Event
     context_object_name = 'events'
