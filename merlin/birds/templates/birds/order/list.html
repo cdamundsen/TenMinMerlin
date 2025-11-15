@@ -10,13 +10,17 @@
                 {{ order.name }}
             </a>
         </h2>
-        {{ order.families.count }}
-        {% if order.families.count == 1 %}
-            family
+        {% if order.families.count > 0 %}
+            {{ order.families.count }}
+            {% if order.families.count == 1 %}
+                family
+            {% else %}
+                families
+            {% endif %}
         {% else %}
-            families
+            No families for this order
         {% endif %}
     {% endfor %}
-    {% include "pagination.html" with page=page_obj %}
-
+    {% include "pagination.html" with page=orders %}
+    {% include "birds/includes/new_order_form.html" %}
 {% endblock %}

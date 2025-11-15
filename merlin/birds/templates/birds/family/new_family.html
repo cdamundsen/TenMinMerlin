@@ -1,0 +1,14 @@
+{% extends "birds/base.html" %}
+
+{% block title %}Add a new Family{% endblock %}
+
+{% block content %}
+    {% if family %}
+        <h2>Family {{ family.name }} has been created</h2>
+        <p>
+            <a href="{{ family.order.get_absolute_url }}">Back to the Order page</a>
+        </p>
+    {% else %}
+        {% include "birds/includes/new_family_form.html" %}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,8 @@
+<h2 class="top">Add a new Species</h2>
+<form action="{% url "birds:new-species" genus.id %}" method="post">
+    {{ form.as_p }}
+    {% csrf_token %}
+    <p>
+        <input type="submit" value="Add Species">
+    </p>
+</form>

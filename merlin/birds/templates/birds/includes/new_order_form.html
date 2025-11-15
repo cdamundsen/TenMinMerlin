@@ -1,0 +1,8 @@
+<h2 class="top">Add a new Order</h2>
+<form action="{% url "birds:new-order" %}" method="post">
+    {{ form.as_p }}
+    {% csrf_token %}
+    <p>
+        <input type="submit" value="Add Order">
+    </p>
+</form>

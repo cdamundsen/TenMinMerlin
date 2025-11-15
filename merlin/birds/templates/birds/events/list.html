@@ -9,16 +9,10 @@
             <a href="{{ event.get_absolute_url }}">{{ event.date }}</a>
         </h2>
         <p>
-            {{ event.location }}
+            <a href="{{ event.location.get_absolute_url }}">{{ event.location }}</a>
         </p>
         <p>
-            {{ event.birds.count }}
-            {% if event.birds.count == 1 %}
-                bird
-            {% else %}
-                birds
-            {% endif %}
-            detected
+            {{ event.birds.count }} bird{{ event.birds.count|pluralize }} detected
         </p>
     {% endfor %}
     {% include "pagination.html" with page=page_obj %}

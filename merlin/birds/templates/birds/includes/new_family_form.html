@@ -1,0 +1,8 @@
+<h2 class="top">Add a new Family</h2>
+<form action="{% url "birds:new-family" order.id %}" method="post">
+    {{ form.as_p }}
+    {% csrf_token %}
+    <p>
+        <input type="submit" value="Add Family">
+    </p>
+</form>

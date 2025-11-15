@@ -1,16 +1,21 @@
 {% extends "birds/base.html" %}
 
-{% block title %}Genues in family {{ genuses.first.family.name }}{% endblock %}
+{% block title %}Genuses in family {{ family.name }}{% endblock %}
 
 {% block content %}
-    <h1>Genuses in family {{ genuses.first.family.name }}</h1>
-    {% for genus in genuses %}
-        <h2>
-            <a href="{{ genus.get_absolute_url }}">
-                <i>{{ genus.name }}</i>
-            </a>
-        </h2>
-        {{ genus.species.all.count }} species
-    {% endfor %}
-    {% include "pagination.html" with page=page_obj %}
+    <h1>Genuses in family {{ family.name }}</h1>
+    {% if genuses %}
+        {% for genus in genuses %}
+            <h2>
+                <a href="{{ genus.get_absolute_url }}">
+                    <i>{{ genus.name }}</i>
+                </a>
+            </h2>
+            {{ genus.species.all.count }} species
+        {% endfor %}
+        {% include "pagination.html" with page=genuses %}
+    {% else %}
+            No genuses in family {{ family }}
+    {% endif %}
+    {% include "birds/includes/new_genus_form.html" %}
 {% endblock %}

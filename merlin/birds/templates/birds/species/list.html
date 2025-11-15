@@ -1,16 +1,21 @@
 {% extends "birds/base.html" %}
 
-{% block title %}Species in genus {{ species.first.genus.name }}{% endblock %}
+{% block title %}Species in genus {{ genus.name }}{% endblock %}
 
 {% block content %}
-    <h1>Species in genus <i>{{ species.first.genus.name }}</i></h1>
-    {% for sp in species %}
-        <h2>
-            <a href="{{ sp.get_absolute_url }}">
-                {{ sp.common_name }}
-            </a>
-        </h2>
-        <i>{{ sp.genus.name}} {{sp.species}}</i>
-    {% endfor %}
-    {% include "pagination.html" with page=page_obj %}
+    <h1>Species in genus <i>{{ genus.name }}</i></h1>
+    {% if species %}
+        {% for sp in species %}
+            <h2>
+                <a href="{{ sp.get_absolute_url }}">
+                    {{ sp.common_name }}
+                </a>
+            </h2>
+            <i>{{ sp.genus.name}} {{sp.species}}</i>
+        {% endfor %}
+        {% include "pagination.html" with page=species %}
+    {% else %}
+            No species in genus {{ genus.name }}
+    {% endif %}
+    {% include "birds/includes/new_species_form.html" %}
 {% endblock %}

@@ -1,0 +1,16 @@
+{% extends "birds/base.html" %}
+
+{% block title %}Add a new Species{% endblock %}
+
+{% block content %}
+    {% if species %}
+        <h2>Species {{ species.common_name }} has been created</h2>
+        <p>
+            <a href="{{ species.genus.get_absolute_url }}">
+                Back to the Genus page
+            </a>
+        </p>
+    {% else %}
+        {% include "birds/includes/new_species_form.html"}
+    {% endif %}
+{% endblock %}

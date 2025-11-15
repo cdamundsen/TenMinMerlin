@@ -20,6 +20,11 @@ h2 {
     margin:30px 0 0;
 }
 
+.top{
+    border-top:1px solid #bbb;
+    padding:10px 0 0 0;
+}
+
 #content { 
     float:left;
     width:60%;

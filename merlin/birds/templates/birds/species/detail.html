@@ -11,6 +11,9 @@
             </a>
             {{sp.species}}
         </i>
+        {% if sp.link %}
+            (<a href="{{ sp.link }}" target="_blank">Cornell Lab All About Birds</a>)
+        {% endif %}
     </p>
     <p>Order:
         <a href="{{ sp.genus.family.order.get_absolute_url }}">
@@ -22,7 +25,6 @@
             {{ sp.genus.family }}
         </a>
     </p>
-    <a href="{{ sp.link }}">Cornell Lab</a>
     <h3>{{ sp.events.all.count }} Detection{% if sp.events.all.count != 1 %}s{% endif %}</h3>
     <ul>
         {% for event in sp.events.all %}

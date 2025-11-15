@@ -1,8 +1,12 @@
 #from django.conf import settings
 from django.db import models
+from django.template.defaultfilters import slugify
 from django.urls import reverse
 
 class Order(models.Model):
+    """
+    Keeps track of all the Orders
+    """
     name:models.CharField = models.CharField(
         max_length=128,
         unique=True
@@ -23,11 +27,22 @@ class Order(models.Model):
             ]
         )
 
+    def save(self, *args, **kwargs):
+        """
+        Override the save method so the slug gets created 
+        """
+        if not self.slug:
+            self.slug = slugify(self.name)
+        return super().save(*args, **kwargs)
+
     def __str__(self):
         return self.name
 
 
 class Family(models.Model):
+    """
+    Keeps track of the Families. Each Family belongs to an Order
+    """
     name:models.CharField = models.CharField(
         max_length=128,
         unique=True
@@ -53,11 +68,24 @@ class Family(models.Model):
             ]
         )
 
+    def save(self, *args, **kwargs):
+        """
+        Override the save method so the slug gets created 
+        """
+        if not self.slug:
+            self.slug = slugify(self.name)
+        return super().save(*args, **kwargs)
+
     def __str__(self):
         return self.name
 
 
 class Genus(models.Model):
+    """
+    Keeps track of all the Genuses. Each Genus belongs to a Family. I'm not
+    sure if we'll encounter a genus that exists in two different families,
+    but currently each genus must be unique
+    """
     name:models.CharField = models.CharField(
         max_length=128,
         unique=True
@@ -83,11 +111,25 @@ class Genus(models.Model):
             ]
         )
 
+    def save(self, *args, **kwargs):
+        """
+        Override the save method so the slug gets created 
+        """
+        if not self.slug:
+            self.slug = slugify(self.name)
+        return super().save(*args, **kwargs)
+
     def __str__(self):
         return self.name
 
 
 class Species(models.Model):
+    """
+    Keeps track of each Species. At this time the common_name must be unique.
+    The species does not have that restriction since in genus species pairs
+    it is possible for the species to be seen more than once. For example
+    Haemorhous mexicanus and quiscalus mexicanus
+    """
     common_name:models.CharField = models.CharField(
         max_length=256,
         unique=True
@@ -124,6 +166,11 @@ class Species(models.Model):
         indexes = [
             models.Index(fields=['common_name'])
         ]
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.common_name)
+        return super().save(*args, **kwargs)
 
     def __str__(self):
         return self.common_name
