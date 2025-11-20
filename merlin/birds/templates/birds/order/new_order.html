@@ -1,14 +1,12 @@
 {% extends "birds/base.html" %}
 
-{% block title %}
-    Add a new Order
-{% endblock %}
+{% block title %}Add a new Order{% endblock %}
 
 {% block content %}
     {% if order %}
         <h2>Order {{ order.name }} has been created</h2>
         <p>
-            <a href="{% url "birds:order-list" %}">Back to the Order list</a>
+            <a href="{{ order.get_absolute_url }}">Back to the Order page</a>
         </p>
     {% else %}
         {% include "birds/includes/new_order_form.html" %}

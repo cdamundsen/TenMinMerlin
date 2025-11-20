@@ -14,5 +14,6 @@
             {{ location.events.count }} events
         </p>
     {% endfor %}
-    {% include "pagination.html" with page=page_obj %}
+    {% include "pagination.html" with page=locations %}
+    {% include "birds/includes/new_location_form.html" %}
 {% endblock %}

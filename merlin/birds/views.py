@@ -2,7 +2,7 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.http import require_POST
 from django.views.generic import ListView
-from .forms import NewFamilyForm, NewGenusForm, NewOrderForm, NewSpeciesForm
+from .forms import NewFamilyForm, NewGenusForm, NewLocationForm, NewOrderForm, NewSpeciesForm
 from .models import Event, Family, Genus, Location, Order, Species
 
 ENTRIES_PER_PAGE = 8
@@ -119,6 +119,30 @@ def species_list(request, genus):
     )
 
 
+def location_list(request):
+    location_list = Location.objects.all()
+    paginator = Paginator(location_list, ENTRIES_PER_PAGE)
+    page_number = request.GET.get('page', 1)
+    try:
+        locations = paginator.page(page_number)
+    except PageNotAnInteger:
+        locations = paginator.page(1)
+    except EmptyPage:
+        if page_number < 1:
+            locations = paginator.page(1)
+        else:
+            locations = paginator.page(paginator.num_pages)
+    form = NewLocationForm()
+    return render(
+        request,
+        "birds/locations/list.html",
+        {
+            'locations': locations,
+            'form': form,
+        }
+    )
+
+
 class EventListView(ListView):
     model = Event
     context_object_name = 'events'
@@ -175,15 +199,24 @@ def new_order(request):
     form = NewOrderForm(data=request.POST)
     if form.is_valid():
         order = form.save()
-    return render(
-        request,
-        'birds/order/new_order.html',
-        {
-            'order': order,
-            'form': form,
-        }
-
-    )
+        family_form = NewFamilyForm()
+        return render(
+            request,
+            'birds/family/list.html',
+            {
+                'order': order,
+                'form': family_form,
+            }
+        )
+    else:
+        return render(
+            request,
+            'birds/order/new_order.html',
+            {
+                'order': order,
+                'form': form,
+            }
+        )
 
 
 @require_POST
@@ -198,14 +231,24 @@ def new_family(request, order_id):
         family = form.save(commit=False)
         family.order = order
         family.save()
-    return render(
-        request,
-        'birds/family/new_family.html',
-        {
-            'order': order,
-            'form': form,
-            'family': family,
-        }
+        genus_form = NewGenusForm()
+        return render(
+            request,
+            'birds/genus/list.html',
+            {
+                'family': family,
+                'form': genus_form,
+            }
+        )
+    else:
+        return render(
+            request,
+            'birds/family/new_family.html',
+            {
+                'order': order,
+                'form': form,
+                'family': family,
+            }
     )
     
 
@@ -221,14 +264,25 @@ def new_genus(request, family_id: int):
         genus = form.save(commit=False)
         genus.family = family
         genus.save()
-    return render(
-        request,
-        'birds/genus/new_genus.html',
-        {
-            'family': family,
-            'form': form,
-            'genus': genus,
-        }
+        species_form = NewSpeciesForm()
+        return render(
+            request,
+            'birds/species/list.html',
+            {
+                'genus': genus,
+                'form': species_form,
+                'family': family,
+            }
+        )
+    else:
+        return render(
+            request,
+            'birds/genus/new_genus.html',
+            {
+                'family': family,
+                'form': form,
+                'genus': genus,
+            }
     )
 
 
@@ -244,12 +298,37 @@ def new_species(request, genus_id: int):
         species = form.save(commit=False)
         species.genus = genus
         species.save()
+        return render(
+            request,
+            'birds/species/detail.html',
+            {
+                'sp': species,
+            }
+        )
+    else:
+        return render(
+            request,
+            'birds/species/new_species.html',
+            {
+                'genus': genus,
+                'form': form,
+                'species': species,
+            }
+    )
+
+
+@require_POST
+def new_location(request):
+    print("############## in new_location ##############")
+    location = None
+    form = NewLocationForm(data=request.POST)
+    if form.is_valid():
+        location = form.save()
     return render(
         request,
-        'birds/species/new_species.html',
+        'birds/locations/new_location.html',
         {
-            'genus': genus,
+            'location': location,
             'form': form,
-            'species': species,
         }
     )

@@ -1,0 +1,8 @@
+<h2 class="top">Add a new Location</h2>
+<form action="{%  url "birds:new-location" %}" method="post">
+    {{ form.as_p }}
+    {% csrf_token %}
+    <p>
+        <input type="submit" value="Add Location">
+    </p>
+</form>
